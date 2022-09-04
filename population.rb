@@ -16,4 +16,8 @@ class Population
       "Individual #{index.to_s.rjust(2, "0")}: #{individual.to_s}"
     end.join("\n")
   end
+
+  def random_subset(n)
+    @individuals.shuffle[0..n-1]
+  end
 end

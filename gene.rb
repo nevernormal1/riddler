@@ -1,4 +1,6 @@
 class Gene
+  attr_reader :value, :phalanxes
+
   def initialize(value:, phalanxes:)
     @value, @phalanxes = value, phalanxes
   end
