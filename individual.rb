@@ -2,27 +2,26 @@ require './gene'
 require 'securerandom'
 
 class Individual
-  attr_reader :id
+  attr_reader :id, :genes
 
-  def initialize
+  def initialize(genes=nil)
     @id = SecureRandom.hex(10)
 
-    phalanxes_remaining = 100
-
-    @genes = (1..10).map do |i|
-      phalanx_count = (rand * phalanxes_remaining).ceil
-      phalanxes_remaining -= phalanx_count
-      phalanx_count
-    end.shuffle.map.with_index do |phalanx_count, index|
-      Gene.new(value: index + 1, phalanxes: phalanx_count)
+    if genes.nil?
+      @genes = (1..100).map do |i|
+        (rand * 10).ceil
+      end
+    else
+      @genes = genes
     end
   end
 
   def to_s
-    @genes.map(&:to_s).join(", ")
+    @genes.join(", ")
   end
 
-  def phalanx_count_for_gene(number)
-    @genes[number - 1].phalanxes
+  def phalanx_count_for_castle(number)
+    @genes.select { |g| g == number }.size
   end
+
 end

@@ -9,8 +9,8 @@ class Matchup
     splits = []
 
     (1..10).each do |i|
-      ind1_count = @ind1.phalanx_count_for_gene(i)
-      ind2_count = @ind2.phalanx_count_for_gene(i)
+      ind1_count = @ind1.phalanx_count_for_castle(i)
+      ind2_count = @ind2.phalanx_count_for_castle(i)
       if ind1_count > ind2_count
         ind1_wins.push(i)
       elsif ind2_count > ind1_count

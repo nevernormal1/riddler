@@ -1,12 +1,13 @@
 require './individual'
 
 class Population
-  INITIAL_SIZE = 100
+  attr_reader :size
 
-  def initialize
+  def initialize(size)
+    @size = size
     @individuals = []
 
-    INITIAL_SIZE.times do
+    @size.times do
       @individuals.push(Individual.new)
     end
   end
