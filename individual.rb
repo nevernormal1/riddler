@@ -23,5 +23,4 @@ class Individual
   def phalanx_count_for_castle(number)
     @genes.select { |g| g == number }.size
   end
-
 end

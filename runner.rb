@@ -25,13 +25,20 @@ end
 
 population = Population.new(POPULATION_SIZE)
 
-new_population = []
 
-population.size.times do
-  parent1 = select_parent(population)
-  parent2 = select_parent(population)
+100.times do
+  puts "Fitness score: #{ population.fitness_score }"
+  new_population = []
 
-  new_population += crossover(parent1, parent2)
+  population.size.times do
+    parent1 = select_parent(population)
+    parent2 = select_parent(population)
+
+    new_population += crossover(parent1, parent2)
+  end
+
+  population = Population.new(POPULATION_SIZE, new_population)
 end
 
-puts new_population
+puts population
+puts "Fitness score: #{ population.fitness_score }"
