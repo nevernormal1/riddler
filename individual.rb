@@ -20,6 +20,17 @@ class Individual
     end
   end
 
+  def self.build_equal_weight_individual
+    genes = []
+    (1..10).each do |i|
+      genes += Array.new(10, i)
+    end
+
+    Individual.new(genes)
+  end
+
+  @@equal_weight_individual = build_equal_weight_individual
+
   def to_s
     @genes.join(", ")
   end
@@ -45,5 +56,16 @@ class Individual
     end
 
     self
+  end
+
+  def fitness_score
+    @fitness_score ||= build_fitness_score
+  end
+
+  private
+  def build_fitness_score
+    matchup = Matchup.new(self, @@equal_weight_individual)
+    matchup.winner
+    matchup.score_differential
   end
 end

@@ -3,17 +3,6 @@ require './individual'
 class Population
   attr_reader :size
 
-  def self.build_equal_weight_individual
-    genes = []
-    (1..10).each do |i|
-      genes += Array.new(10, i)
-    end
-
-    Individual.new(genes)
-  end
-
-  @@equal_weight_individual = build_equal_weight_individual
-
   def initialize(size, individuals=[])
     @size = size
 
@@ -38,11 +27,11 @@ class Population
     @individuals.shuffle[0..n-1]
   end
 
+  def strongest(n)
+    @individuals.dup.sort_by(&:fitness_score)[-n..]
+  end
+
   def fitness_score
-    @individuals.map do |individual|
-      matchup = Matchup.new(individual, @@equal_weight_individual)
-      matchup.winner
-      matchup.score_differential
-    end.sum / @individuals.size
+    @individuals.map(&:fitness_score).sum / @individuals.size.to_f
   end
 end

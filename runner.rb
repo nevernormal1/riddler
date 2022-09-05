@@ -5,6 +5,7 @@ require './matchup'
 
 TOURNAMENT_SIZE = 8
 POPULATION_SIZE = 100
+REPLACEMENT_PERCENTAGE = 0.20
 
 def select_parent(population)
   tournament_players = population.random_subset(TOURNAMENT_SIZE)
@@ -29,9 +30,9 @@ population = Population.new(POPULATION_SIZE)
 
 100.times do
   puts "Fitness score: #{ population.fitness_score }"
-  new_population = []
+  next_generation = []
 
-  population.size.times do
+  (REPLACEMENT_PERCENTAGE * population.size).ceil.times do
     parent1 = select_parent(population)
     parent2 = select_parent(population)
 
@@ -41,14 +42,12 @@ population = Population.new(POPULATION_SIZE)
     child1 = child1.mutate
     child2 = child2.mutate
 
-    new_population += [child1, child2]
+    next_generation += [child1, child2]
   end
 
-  new_population = Population.new(POPULATION_SIZE, new_population)
+  next_generation = population.strongest(population.size - next_generation.size) + next_generation
 
-  if new_population.fitness_score > population.fitness_score
-    population = new_population
-  end
+  population = Population.new(POPULATION_SIZE, next_generation)
 end
 
 puts population
