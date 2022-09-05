@@ -47,13 +47,13 @@ class Individual
       GENES_TO_MUTATE.times do
         position = (rand * 100).floor
         new_genes[position] = (rand * 10).ceil
-      end
 
-      mutated_child = Individual.new(new_genes)
+        mutated_child = Individual.new(new_genes)
 
-      matchup = Matchup.new(self, mutated_child)
-      if matchup.winner == mutated_child
-        return mutated_child
+        matchup = Matchup.new(self, mutated_child)
+        if matchup.winner == mutated_child
+          return mutated_child
+        end
       end
     end
 
