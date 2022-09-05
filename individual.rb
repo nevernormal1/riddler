@@ -5,6 +5,42 @@ require 'securerandom'
 MUTATION_PROBABILITY = 0.15
 GENES_TO_MUTATE = 3
 
+class Exemplars
+  def self.equal_weight_individual
+    genes = []
+    (1..10).each do |i|
+      genes += Array.new(10, i)
+    end
+
+    Individual.new(genes)
+  end
+
+  def self.top_heavy_individual
+    genes = []
+
+    (6..10).each do |i|
+      genes += Array.new(20, i)
+    end
+
+    Individual.new(genes)
+  end
+
+  def self.gradient_individual
+    Individual.from_hash({
+      1 => 1,
+      2 => 2,
+      3 => 4,
+      4 => 6,
+      5 => 8,
+      6 => 10,
+      7 => 12,
+      8 => 17,
+      9 => 19,
+      10 => 21,
+    })
+  end
+end
+
 class Individual
   attr_reader :id, :genes
 
@@ -31,17 +67,6 @@ class Individual
 
     self.new(_genes)
   end
-
-  def self.build_equal_weight_individual
-    _genes = []
-    (1..10).each do |i|
-      _genes += Array.new(10, i)
-    end
-
-    Individual.new(_genes)
-  end
-
-  @@equal_weight_individual = build_equal_weight_individual
 
   def to_s
     (1..10).map do |i|
@@ -75,10 +100,18 @@ class Individual
     @fitness_score ||= build_fitness_score
   end
 
+  @@exemplars = [
+    Exemplars.equal_weight_individual,
+    Exemplars.top_heavy_individual,
+    Exemplars.gradient_individual,
+  ]
+
   private
   def build_fitness_score
-    matchup = Matchup.new(self, @@equal_weight_individual)
-    matchup.winner
-    matchup.score_differential
+    @@exemplars.map do |exemplar|
+      matchup = Matchup.new(self, exemplar)
+      matchup.winner
+      matchup.score_differential
+    end.sum / @@exemplars.size.to_f
   end
 end
