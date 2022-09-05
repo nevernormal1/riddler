@@ -32,7 +32,9 @@ class Individual
   @@equal_weight_individual = build_equal_weight_individual
 
   def to_s
-    @genes.join(", ")
+    (1..10).map do |i|
+      "#{i.to_s.rjust(2, ' ')}: #{genes.select { |g| g == i }.size.to_s.rjust(3, ' ')}"
+    end.join(", ")
   end
 
   def phalanx_count_for_castle(number)
