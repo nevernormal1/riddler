@@ -4,11 +4,11 @@ require './individual'
 require './matchup'
 
 TOURNAMENT_SIZE = 8
-POPULATION_SIZE = 128
+POPULATION_SIZE = 400
 REPLACEMENT_PERCENTAGE = 0.10
-GENERATIONS = 128
+GENERATIONS = 500
 CHAMPION_TOURNAMENT_SIZE = 64
-CROSSOVER_ITERATIONS = 2
+CROSSOVER_ITERATIONS = 3
 
 def select_parent(population)
   tournament_players = population.random_subset(TOURNAMENT_SIZE)
