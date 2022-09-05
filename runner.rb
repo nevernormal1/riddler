@@ -5,7 +5,7 @@ require './matchup'
 
 TOURNAMENT_SIZE = 8
 POPULATION_SIZE = 100
-REPLACEMENT_PERCENTAGE = 0.20
+REPLACEMENT_PERCENTAGE = 0.16
 
 def select_parent(population)
   tournament_players = population.random_subset(TOURNAMENT_SIZE)
