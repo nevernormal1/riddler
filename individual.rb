@@ -45,6 +45,8 @@ class Individual
   attr_reader :id, :genes
 
   def initialize(_genes=nil)
+    @cached_counts = {}
+
     @id = SecureRandom.hex(10)
 
     if _genes.nil?
@@ -75,7 +77,7 @@ class Individual
   end
 
   def phalanx_count_for_castle(number)
-    genes.select { |g| g == number }.size
+    @cached_counts[number] ||= genes.select { |g| g == number }.size
   end
 
   def mutate
