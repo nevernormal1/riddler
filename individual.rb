@@ -2,8 +2,8 @@ require './gene'
 require './matchup'
 require 'securerandom'
 
-MUTATION_PROBABILITY = 0.15
-GENES_TO_MUTATE = 3
+MUTATION_PROBABILITY = 0.08
+MAX_GENES_TO_MUTATE = 3
 
 class Exemplars
   def self.equal_weight_individual
@@ -82,16 +82,30 @@ class Individual
 
   def mutate
     if rand < MUTATION_PROBABILITY
+      mutants = []
+
       new_genes = genes.dup
-      GENES_TO_MUTATE.times do
+      (rand * MAX_GENES_TO_MUTATE).ceil.times do
         position = (rand * 100).floor
         new_genes[position] = (rand * 10).ceil
+      end
+      mutants.push Individual.new(new_genes)
 
-        mutated_child = Individual.new(new_genes)
+      new_genes = genes.dup
+      position = (rand * 100).floor
 
-        if mutated_child.fitness_score > self.fitness_score
-          return mutated_child
-        end
+      if rand < 0.4
+        value = new_genes[position]
+        index = new_genes.index {|i| i != value }
+        new_genes[index] = value
+      else
+        new_genes[position] = (new_genes[position] + (rand * 2).ceil) % 10
+      end
+      mutants.push Individual.new(new_genes)
+      mutants = mutants.sort_by(&:fitness_score)
+
+      if mutants.last.fitness_score > self.fitness_score
+        return mutants.last
       end
     end
 
