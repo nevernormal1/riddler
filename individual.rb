@@ -8,25 +8,37 @@ GENES_TO_MUTATE = 3
 class Individual
   attr_reader :id, :genes
 
-  def initialize(genes=nil)
+  def initialize(_genes=nil)
     @id = SecureRandom.hex(10)
 
-    if genes.nil?
+    if _genes.nil?
       @genes = (1..100).map do |i|
         (rand * 10).ceil
       end
     else
-      @genes = genes
+      @genes = _genes
     end
   end
 
-  def self.build_equal_weight_individual
-    genes = []
-    (1..10).each do |i|
-      genes += Array.new(10, i)
+  def self.from_hash(hash)
+    _genes = []
+
+    hash.each do |castle, count|
+      count.times do
+        _genes.push(castle)
+      end
     end
 
-    Individual.new(genes)
+    self.new(_genes)
+  end
+
+  def self.build_equal_weight_individual
+    _genes = []
+    (1..10).each do |i|
+      _genes += Array.new(10, i)
+    end
+
+    Individual.new(_genes)
   end
 
   @@equal_weight_individual = build_equal_weight_individual
@@ -50,8 +62,7 @@ class Individual
 
         mutated_child = Individual.new(new_genes)
 
-        matchup = Matchup.new(self, mutated_child)
-        if matchup.winner == mutated_child
+        if mutated_child.fitness_score > self.fitness_score
           return mutated_child
         end
       end
