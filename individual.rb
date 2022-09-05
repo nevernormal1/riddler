@@ -2,7 +2,7 @@ require './gene'
 require './matchup'
 require 'securerandom'
 
-MUTATION_PROBABILITY = 0.1
+MUTATION_PROBABILITY = 0.15
 GENES_TO_MUTATE = 3
 
 class Individual
@@ -38,11 +38,11 @@ class Individual
   end
 
   def phalanx_count_for_castle(number)
-    @genes.select { |g| g == number }.size
+    genes.select { |g| g == number }.size
   end
 
   def mutate
-    if rand <= MUTATION_PROBABILITY
+    if rand < MUTATION_PROBABILITY
       new_genes = genes.dup
       GENES_TO_MUTATE.times do
         position = (rand * 100).floor
