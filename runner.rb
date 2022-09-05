@@ -4,11 +4,11 @@ require './individual'
 require './matchup'
 
 TOURNAMENT_SIZE = 8
-POPULATION_SIZE = 400
-REPLACEMENT_PERCENTAGE = 0.10
-GENERATIONS = 600
+POPULATION_SIZE = 500
+REPLACEMENT_PERCENTAGE = 0.1
+GENERATIONS = 1000
 CHAMPION_TOURNAMENT_SIZE = 64
-CROSSOVER_ITERATIONS = 3
+CROSSOVER_ITERATIONS = 5
 
 def select_parent(population)
   tournament_players = population.random_subset(TOURNAMENT_SIZE)
@@ -36,8 +36,11 @@ end
 def find_champion
   population = Population.new(POPULATION_SIZE)
 
-  GENERATIONS.times do
-    puts "Fitness score: #{ population.fitness_score }..."
+  GENERATIONS.times do |i|
+    if i % 10 == 0
+      puts "Fitness score: #{ population.fitness_score }..."
+    end
+
     next_generation = []
 
     (REPLACEMENT_PERCENTAGE * population.size).ceil.times do
@@ -62,13 +65,36 @@ def find_champion
 
   contenders = population.strongest(64)
 
-  tournament = Tournament.new(contenders)
-  champion = tournament.winner
+  wins = {}
 
-  puts "Best individual:"
-  puts champion
+  contenders.each do |contender|
+    wins[contender] = 0
+    contenders.each do |other_contender|
+      next if contender == other_contender
+      m = Matchup.new(contender, other_contender)
+      if m.winner == contender
+        wins[contender] += 1
+      end
+    end
+  end
 
-  champion
+  wins = wins.sort_by do |contender, wins|
+    wins
+  end
+
+  wins.each do |contender, value|
+    puts "#{contender.id}: #{value}"
+  end
+
+
+
+  #tournament = Tournament.new(contenders)
+  #champion = tournament.winner
+
+  #puts "Best individual:"
+  #puts champion
+
+  #champion
 end
 
 find_champion

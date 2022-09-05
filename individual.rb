@@ -3,7 +3,7 @@ require './matchup'
 require 'securerandom'
 
 MUTATION_PROBABILITY = 0.075
-MAX_GENES_TO_MUTATE = 3
+MAX_GENES_TO_MUTATE = 4
 
 class Exemplars
   def self.equal_weight_individual
