@@ -79,22 +79,35 @@ def find_champion
   end
 
   wins = wins.sort_by do |contender, wins|
-    wins
+    -wins
+  end.map.with_index do |a, i|
+    {contender: a.first, seed: i + 1}
   end
 
-  wins.each do |contender, value|
-    puts "#{contender.id}: #{value}"
+  puts  "Seedings:"
+  puts wins.inspect
+
+  while wins.size > 1
+    temp = []
+    while wins.size > 0
+      strong = wins.shift
+      weak = wins.pop
+      temp.push([strong, weak])
+    end
+
+    wins = temp
   end
 
+  contenders = wins.flatten.map { |win| win[:contender] }
 
 
-  #tournament = Tournament.new(contenders)
-  #champion = tournament.winner
+  tournament = Tournament.new(contenders)
+  champion = tournament.winner
 
-  #puts "Best individual:"
-  #puts champion
+  puts "Best individual: #{ champion.id }"
+  puts champion
 
-  #champion
+  champion
 end
 
 find_champion

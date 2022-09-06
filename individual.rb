@@ -27,16 +27,16 @@ class Exemplars
 
   def self.gradient_individual
     Individual.from_hash({
-      1 => 1,
-      2 => 2,
-      3 => 4,
-      4 => 6,
-      5 => 8,
-      6 => 10,
-      7 => 12,
-      8 => 17,
-      9 => 19,
-      10 => 21,
+      1 => 2,
+      2 => 3,
+      3 => 1,
+      4 => 1,
+      5 => 2,
+      6 => 1,
+      7 => 21,
+      8 => 21,
+      9 => 23,
+      10 => 25,
     })
   end
 end
@@ -74,6 +74,10 @@ class Individual
     (1..10).map do |i|
       "#{i.to_s.rjust(2, ' ')}: #{genes.select { |g| g == i }.size.to_s.rjust(3, ' ')}"
     end.join(", ")
+  end
+
+  def inspect
+    id
   end
 
   def phalanx_count_for_castle(number)
